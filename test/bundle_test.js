@@ -17,9 +17,7 @@
 const assert = require('chai').assert;
 const dom5 = require('dom5');
 const parse5 = require('parse5');
-const File = require('vinyl');
 const path = require('path');
-const stream = require('stream');
 const mergeStream = require('merge-stream');
 const ProjectConfig = require('polymer-project-config').ProjectConfig;
 
@@ -34,7 +32,6 @@ const root = path.resolve('test/static/bundler-data');
 suite('Bundler', () => {
 
   let bundler;
-  let sourceStream;
   let bundledStream;
   let files;
 
@@ -44,9 +41,6 @@ suite('Bundler', () => {
     let analyzer = new StreamAnalyzer(config);
     analyzer.start();
     bundler = new Bundler(config, analyzer);
-    sourceStream = new stream.Readable({
-      objectMode: true,
-    });
     bundledStream =
         mergeStream(analyzer.sources, analyzer.dependencies).pipe(bundler);
     files = new Map();
@@ -63,7 +57,6 @@ suite('Bundler', () => {
 
   teardown(() => {
     bundler = null;
-    sourceStream = null;
     bundledStream = null;
     files = null;
   });
@@ -252,11 +245,4 @@ suite('Bundler', () => {
     assert.isTrue(hasImport(entrypointCDoc, 'shared-bundle.html'));
     assert.isTrue(hasImport(shellDoc, 'shared-bundle.html'));
   }));
-});
-
-const F = (filename, contents) => new File({
-  cwd: root,
-  base: root,
-  path: path.resolve(root, filename),
-  contents: new Buffer(contents),
 });
