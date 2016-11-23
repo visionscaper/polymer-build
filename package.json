@@ -36,7 +36,7 @@
     "sw-precache": "^4.2.0",
     "vinyl": "^1.1.1",
     "vinyl-fs": "^2.4.3",
-    "vulcanize": "visionscaper/vulcanize#bugfix/assetpath"
+    "vulcanize": "git+https://github.com/visionscaper/vulcanize.git#bugfix/assetpath"
   },
   "devDependencies": {
     "@types/fs-extra": "0.0.34",
